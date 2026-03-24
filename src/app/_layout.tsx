@@ -30,8 +30,7 @@ function RootNavigator() {
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
-          animation: Platform.OS === 'ios' ? 'simple_push' : 'default',
-          animationDuration: Platform.OS === 'ios' ? 420 : undefined,
+          animation: 'default',
           headerStyle: {
             backgroundColor: palette.background,
           },
