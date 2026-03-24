@@ -14,6 +14,18 @@ function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function resolveDevelopmentCatalogFallback() {
+  if (__DEV__) {
+    console.warn(
+      '[Calm Wiki] Supabase configuration is missing. Falling back to bundled mock articles in development.'
+    );
+    cachedArticles = publishedArticles;
+    return cachedArticles;
+  }
+
+  throw new Error('The app is missing its Supabase configuration.');
+}
+
 function splitSummary(summaryText: string) {
   return summaryText
     .split(/\n\s*\n/g)
@@ -58,8 +70,7 @@ export async function fetchArticleCatalog(forceRefresh = false) {
   }
 
   if (!hasSupabaseConfig || !supabase) {
-    cachedArticles = publishedArticles;
-    return cachedArticles;
+    return resolveDevelopmentCatalogFallback();
   }
 
   const { data, error } = await supabase

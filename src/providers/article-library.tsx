@@ -15,6 +15,8 @@ const STORAGE_KEYS = {
   historyIds: 'calm-wiki/history-ids',
 } as const;
 
+const MIN_ARTICLE_SWAP_MS = 450;
+
 type ArticleLibraryValue = {
   currentArticle: Article | null;
   errorMessage: string | null;
@@ -138,6 +140,7 @@ export function ArticleLibraryProvider({ children }: { children: React.ReactNode
 
   async function materializeNextArticle(extraExcludeIds: string[] = []) {
     setIsRefreshing(true);
+    const startedAt = Date.now();
 
     try {
       const catalog = articleCatalog.length > 0 ? articleCatalog : await fetchArticleCatalog();
@@ -147,6 +150,14 @@ export function ArticleLibraryProvider({ children }: { children: React.ReactNode
           : [...historyIds, ...extraExcludeIds],
         { articles: catalog }
       );
+
+      const remainingDelay = MIN_ARTICLE_SWAP_MS - (Date.now() - startedAt);
+
+      if (remainingDelay > 0) {
+        await new Promise((resolve) => {
+          setTimeout(resolve, remainingDelay);
+        });
+      }
 
       startTransition(() => {
         setArticleCatalog(catalog);

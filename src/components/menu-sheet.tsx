@@ -66,8 +66,16 @@ export function MenuSheet({ onClose, open }: MenuSheetProps) {
   const { palette } = useAppTheme();
   const styles = createStyles(palette);
 
+  function navigateTo(path: '/favorites' | '/history' | '/about') {
+    onClose();
+
+    requestAnimationFrame(() => {
+      router.push(path);
+    });
+  }
+
   return (
-    <Modal animationType="fade" onRequestClose={onClose} transparent visible={open}>
+    <Modal animationType="none" onRequestClose={onClose} transparent visible={open}>
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.backdrop}>
           <TouchableWithoutFeedback>
@@ -86,24 +94,21 @@ export function MenuSheet({ onClose, open }: MenuSheetProps) {
                 icon="heart-outline"
                 label="Favorites"
                 onPress={() => {
-                  onClose();
-                  router.push('/favorites');
+                  navigateTo('/favorites');
                 }}
               />
               <MenuLinkRow
                 icon="time-outline"
                 label="History"
                 onPress={() => {
-                  onClose();
-                  router.push('/history');
+                  navigateTo('/history');
                 }}
               />
               <MenuLinkRow
                 icon="information-circle-outline"
                 label="About"
                 onPress={() => {
-                  onClose();
-                  router.push('/about');
+                  navigateTo('/about');
                 }}
               />
 

@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
-import { Linking, Pressable, Share, StyleSheet, Text, View } from 'react-native';
+import { Linking, Platform, Pressable, Share, StyleSheet, Text, View } from 'react-native';
 
 import { ArticleAction, ArticleActionBar } from '@/components/article-action-bar';
 import { ArticleCard } from '@/components/article-card';
@@ -81,7 +81,12 @@ export default function HomeScreen() {
       contentStyle={styles.screenContent}
       scrollResetKey={currentArticle?.id ?? null}>
       <View style={styles.topBar}>
-        <Text style={styles.title} numberOfLines={1}>
+        <Text
+          accessibilityRole="header"
+          adjustsFontSizeToFit
+          minimumFontScale={0.84}
+          numberOfLines={1}
+          style={styles.title}>
           Calm Wiki
         </Text>
 
@@ -161,20 +166,27 @@ function createStyles(palette: AppPalette) {
     },
     topBar: {
       position: 'relative',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center',
       marginBottom: spacing.sm,
-      minHeight: 60,
-      paddingHorizontal: 58,
+      minHeight: 74,
+      paddingRight: 72,
     },
     title: {
       color: palette.text,
-      fontSize: 40,
-      lineHeight: 44,
-      fontFamily: fonts?.serif,
-      textAlign: 'center',
-      fontStyle: 'italic',
-      maxWidth: '100%',
+      fontSize: 42,
+      lineHeight: 50,
+      fontFamily: Platform.select({
+        ios: 'Snell Roundhand',
+        android: fonts?.serif,
+        default: fonts?.serif,
+        web: 'cursive',
+      }),
+      fontStyle: Platform.select({
+        ios: 'normal',
+        default: 'italic',
+      }),
+      width: '100%',
     },
     menuButton: {
       position: 'absolute',

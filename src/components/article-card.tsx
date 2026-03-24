@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CC_BY_SA_URL } from '@/constants/legal';
 import { AppPalette, fonts, radii, spacing, typeScale } from '@/constants/theme';
@@ -20,14 +20,13 @@ export function ArticleCard({ article, onOpenLicense, onOpenSource }: ArticleCar
     <View style={styles.card}>
       <Text style={styles.metaText}>From Wikipedia · {article.readingMinutes} min read</Text>
 
-      <Text style={styles.title}>{article.title}</Text>
-
-      <Text style={styles.sourceLine}>
-        Original article:{' '}
-        <Text accessibilityRole="link" onPress={onOpenSource} style={styles.sourceLineLink}>
-          {article.title}
-        </Text>
-      </Text>
+      <Pressable
+        accessibilityHint={`Opens ${article.sourceUrl}`}
+        accessibilityRole="link"
+        onPress={onOpenSource}
+        style={({ pressed }) => [styles.titleWrap, pressed && styles.pressed]}>
+        <Text style={styles.title}>{article.title}</Text>
+      </Pressable>
 
       <View style={styles.summaryBlock}>
         {article.summaryParagraphs.map((paragraph) => (
@@ -88,17 +87,11 @@ function createStyles(palette: AppPalette) {
       fontSize: typeScale.title,
       lineHeight: 40,
       fontFamily: fonts?.serif,
-    },
-    sourceLine: {
-      color: palette.textMuted,
-      fontSize: typeScale.body,
-      lineHeight: 24,
-      fontFamily: fonts?.body,
-    },
-    sourceLineLink: {
-      color: palette.accent,
+      textDecorationColor: palette.accent,
       textDecorationLine: 'underline',
-      fontWeight: '600',
+    },
+    titleWrap: {
+      alignSelf: 'flex-start',
     },
     summaryBlock: {
       gap: spacing.md,
@@ -133,6 +126,9 @@ function createStyles(palette: AppPalette) {
       color: palette.accent,
       textDecorationLine: 'underline',
       fontWeight: '600',
+    },
+    pressed: {
+      opacity: 0.72,
     },
   });
 }

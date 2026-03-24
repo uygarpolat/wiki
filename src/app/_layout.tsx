@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 
 import { ArticleLibraryProvider } from '@/providers/article-library';
 import { ThemeProvider, useAppTheme } from '@/providers/theme-provider';
@@ -22,6 +23,8 @@ function RootNavigator() {
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
+          animation: Platform.OS === 'ios' ? 'simple_push' : 'default',
+          animationDuration: Platform.OS === 'ios' ? 420 : undefined,
           headerStyle: {
             backgroundColor: palette.background,
           },
