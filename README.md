@@ -1,6 +1,6 @@
 # Calm Wiki
 
-A minimal Expo + React Native scaffold for a calm Wikipedia discovery app.
+A minimalist Expo + React Native app for reading curated summaries of interesting Wikipedia articles.
 
 ## Getting started
 
@@ -13,12 +13,13 @@ npm install
 2. Start the app
 
 ```bash
-npm run ios
+npm start
 ```
 
 You can also run:
 
 ```bash
+npm run ios
 npm run android
 npm run web
 ```
@@ -28,26 +29,36 @@ npm run web
 - `src/app`: Expo Router screens
 - `src/components`: reusable UI building blocks
 - `src/constants`: colors, spacing, and type scales
-- `src/data`: local mock article data
-- `src/lib`: selection and mock service logic
+- `src/data`: local fallback article data used only in development
+- `src/lib`: article loading and Supabase client logic
 - `src/providers`: app-level discovery, saved, and history state
 - `scripts`: out-of-app article curation helpers
-- `SPECS.md`: product and architecture spec
 
 ## Current state
 
-This scaffold uses local published mock content so the app can be shaped before wiring up Supabase. The intended workflow is:
+The app reads published articles from Supabase. Local mock content exists only as a development fallback.
 
-1. run scripts outside the app to fetch article candidates
-2. review and approve the articles manually
-3. generate SQL or import payloads for Postgres / Supabase
-4. have the app read already-published entries from the backend
+The article workflow stays outside the mobile app:
 
-The app currently reflects the product direction in the spec:
+1. choose or fetch candidate Wikipedia articles outside the app
+2. review them manually
+3. add approved entries to `data/manual-review/reviewed-articles.json`
+4. rebuild the import SQL with `npm run reviewed:sql`
+5. import the cumulative reviewed set with `npm run db:import-reviewed`
+
+Summary rules for curated entries:
+
+- define the subject clearly at the start
+- explain only the concepts needed for comprehension
+- avoid phrases like "the article says" or other meta commentary
+- keep shortened titles descriptive and non-cryptic
+- reject entries that still feel thin after clarification
+
+The current MVP includes:
 
 - `Calm Wiki` working title
 - text-only article reading
-- long-form summaries
+- curated 2-minute summaries
 - favorites, history, and theme toggle
 - menu-driven secondary navigation
 

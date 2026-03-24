@@ -50,6 +50,9 @@ supabase/.temp/
 # local content-candidate scratch files
 data/manual-review/candidates*.json
 data/manual-review/candidates-review.md
+data/manual-review/reviewed-articles.sql
 
 spec-notes.txt
+SPECS.md
+scripts/README.md
 .vscode/
