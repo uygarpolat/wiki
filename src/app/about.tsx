@@ -1,64 +1,61 @@
-import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { QuietButton } from '@/components/quiet-button';
+import { CC_BY_SA_URL, WIKIMEDIA_APP_GUIDANCE_URL } from '@/constants/legal';
 import { ScreenShell } from '@/components/screen-shell';
 import { AppPalette, fonts, radii, spacing, typeScale } from '@/constants/theme';
 import { useAppTheme } from '@/providers/theme-provider';
 
-function InfoBlock({
-  copy,
-  title,
-}: {
-  copy: string;
-  title: string;
-}) {
+function SectionCard({ children, title }: { children: React.ReactNode; title: string }) {
   const { palette } = useAppTheme();
   const styles = createStyles(palette);
 
   return (
-    <View style={styles.infoBlock}>
-      <Text style={styles.blockTitle}>{title}</Text>
-      <Text style={styles.blockCopy}>{copy}</Text>
+    <View style={styles.card}>
+      <Text style={styles.cardTitle}>{title}</Text>
+      <View style={styles.cardBody}>{children}</View>
     </View>
   );
 }
 
 export default function AboutScreen() {
-  const router = useRouter();
   const { palette } = useAppTheme();
   const styles = createStyles(palette);
 
   return (
     <ScreenShell contentStyle={styles.content}>
-      <View style={styles.hero}>
-        <Text style={styles.title}>About Calm Wiki</Text>
+      <SectionCard title="Calm Wiki">
         <Text style={styles.copy}>
-          Calm Wiki is meant to feel like a small reading room rather than a content feed. The app
-          presents one reviewed Wikipedia-based summary at a time, keeps the interface light, and
-          leaves the deeper source article one tap away.
+          Calm Wiki is a small reading app built around reviewed summaries of Wikipedia articles.
+          It is meant to be an entry point into the source, not a replacement for it.
         </Text>
-      </View>
+      </SectionCard>
 
-      <InfoBlock
-        title="What the app is"
-        copy="A quiet mobile reader for curated Wikipedia articles. It is not meant to replace Wikipedia, only to make a strong entry point into it."
-      />
-      <InfoBlock
-        title="How content gets in"
-        copy="Article discovery and screening happen outside the app through scripts and review steps. The mobile app only reads from already published entries."
-      />
-      <InfoBlock
-        title="How it plans to make money"
-        copy="The current product assumption is a free app with restrained advertising later, if the ads can stay unobtrusive enough not to break the mood."
-      />
-      <InfoBlock
-        title="What stays local"
-        copy="Favorites, history, and theme preference stay on the device in this scaffold."
-      />
+      <SectionCard title="Attribution">
+        <Text style={styles.copy}>
+          Calm Wiki publishes adapted summaries of Wikipedia content. Each summary links back to
+          its source article, and the underlying material remains available under CC BY-SA 4.0.
+          Calm Wiki is an independent app and is not affiliated with or endorsed by Wikipedia or
+          the Wikimedia Foundation.
+        </Text>
 
-      <QuietButton label="Back to article" variant="solid" onPress={() => router.replace('/')} />
+        <View style={styles.linkGroup}>
+          <Pressable
+            onPress={() => {
+              void Linking.openURL(CC_BY_SA_URL);
+            }}
+            style={({ pressed }) => [styles.linkChip, pressed && styles.pressed]}>
+            <Text style={styles.linkChipLabel}>CC BY-SA 4.0</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              void Linking.openURL(WIKIMEDIA_APP_GUIDANCE_URL);
+            }}
+            style={({ pressed }) => [styles.linkChip, pressed && styles.pressed]}>
+            <Text style={styles.linkChipLabel}>Wikimedia guidance</Text>
+          </Pressable>
+        </View>
+      </SectionCard>
     </ScreenShell>
   );
 }
@@ -66,43 +63,64 @@ export default function AboutScreen() {
 function createStyles(palette: AppPalette) {
   return StyleSheet.create({
     content: {
-      gap: spacing.md,
+      gap: spacing.lg,
       paddingTop: spacing.md,
     },
-    hero: {
-      gap: spacing.xs,
+    card: {
+      backgroundColor: palette.surface,
+      borderRadius: radii.lg,
+      borderWidth: 1,
+      borderColor: palette.border,
+      padding: spacing.lg,
+      gap: spacing.md,
+      shadowColor: palette.shadow,
+      shadowOpacity: 1,
+      shadowRadius: 18,
+      shadowOffset: {
+        width: 0,
+        height: 8,
+      },
+      elevation: 0,
     },
-    title: {
+    cardTitle: {
       color: palette.text,
       fontSize: typeScale.section,
       lineHeight: 30,
       fontFamily: fonts?.serif,
     },
+    cardBody: {
+      gap: spacing.sm,
+    },
     copy: {
       color: palette.textMuted,
       fontSize: typeScale.body,
-      lineHeight: 24,
+      lineHeight: 26,
       fontFamily: fonts?.body,
     },
-    infoBlock: {
-      backgroundColor: palette.surface,
+    linkGroup: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+      marginTop: spacing.xs,
+    },
+    linkChip: {
+      minHeight: 38,
+      paddingHorizontal: spacing.md,
+      borderRadius: radii.pill,
       borderWidth: 1,
       borderColor: palette.border,
-      borderRadius: radii.md,
-      padding: spacing.md,
-      gap: spacing.xs,
+      backgroundColor: palette.surfaceMuted,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    blockTitle: {
+    linkChipLabel: {
       color: palette.text,
-      fontSize: 17,
+      fontSize: typeScale.label,
       fontFamily: fonts?.body,
       fontWeight: '600',
     },
-    blockCopy: {
-      color: palette.textMuted,
-      fontSize: typeScale.body,
-      lineHeight: 24,
-      fontFamily: fonts?.body,
+    pressed: {
+      opacity: 0.72,
     },
   });
 }

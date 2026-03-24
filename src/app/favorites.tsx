@@ -12,27 +12,27 @@ export default function FavoritesScreen() {
   const router = useRouter();
   const { palette } = useAppTheme();
   const styles = createStyles(palette);
-  const { favorites, selectArticle } = useArticleLibrary();
+  const { favorites, removeFavorite, selectArticle } = useArticleLibrary();
 
   return (
     <ScreenShell contentStyle={styles.content}>
       <View style={styles.hero}>
         <Text style={styles.title}>Saved articles</Text>
-        <Text style={styles.copy}>
-          A quiet shelf for the entries you want to revisit later.
-        </Text>
+        <Text style={styles.copy}>A compact shelf for the entries you want to revisit later.</Text>
       </View>
 
       {favorites.length > 0 ? (
         favorites.map((article) => (
-          <ArticleListItem
-            key={article.id}
-            article={article}
-            onPress={() => {
-              selectArticle(article);
-              router.replace('/');
-            }}
-          />
+          <View key={article.id} style={styles.listItemWrap}>
+            <ArticleListItem
+              article={article}
+              onDelete={() => removeFavorite(article.id)}
+              onPress={() => {
+                selectArticle(article);
+                router.replace('/');
+              }}
+            />
+          </View>
         ))
       ) : (
         <View style={styles.emptyState}>
@@ -70,6 +70,9 @@ function createStyles(palette: AppPalette) {
     },
     emptyState: {
       gap: spacing.xs,
+    },
+    listItemWrap: {
+      marginBottom: spacing.sm,
     },
     emptyTitle: {
       color: palette.text,

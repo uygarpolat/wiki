@@ -25,6 +25,7 @@ function RootNavigator() {
           headerStyle: {
             backgroundColor: palette.background,
           },
+          headerBackTitle: 'Back',
           headerShadowVisible: false,
           headerTintColor: palette.text,
           headerTitleStyle: {
@@ -40,7 +41,6 @@ function RootNavigator() {
         <Stack.Screen name="favorites" options={{ title: 'Favorites' }} />
         <Stack.Screen name="history" options={{ title: 'History' }} />
         <Stack.Screen name="about" options={{ title: 'About' }} />
-        <Stack.Screen name="attribution" options={{ title: 'Attribution' }} />
       </Stack>
     </>
   );

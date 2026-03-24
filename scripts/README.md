@@ -22,6 +22,7 @@ Current content note:
 - summaries should explain any premise or concept that is essential to understanding why the subject matters, especially if the topic would otherwise feel cryptic on first read
 - assume an interested, reasonably thoughtful general reader, not a specialist; define only the concepts that are doing real explanatory work
 - if the central hook depends on a specific factual setup, surface that setup early rather than leaving the reader to infer it later
+- summaries should describe the subject directly rather than making the source article itself the actor, for example avoiding phrases like "the article says" or "the article links"
 - if an article still feels thin or uninteresting even after that clarification pass, it should be rejected rather than forced into the library
 
 Current ingestion note:

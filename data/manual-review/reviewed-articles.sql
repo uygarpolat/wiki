@@ -732,3 +732,52 @@ on conflict (slug) do update set
   reading_minutes = excluded.reading_minutes,
   quality_status = excluded.quality_status,
   published_at = excluded.published_at;
+
+insert into articles (
+  slug,
+  source_language,
+  wikipedia_title,
+  wikipedia_url,
+  wikipedia_revision_id,
+  source_extract,
+  summary_text,
+  article_history_url,
+  attribution_text,
+  category,
+  reading_minutes,
+  quality_status,
+  published_at
+) values (
+  'john-davidson-activist',
+  'en',
+  'John Davidson',
+  'https://en.wikipedia.org/wiki/John_Davidson_(activist)',
+  '1344824059',
+  'John Davidson is a Scottish activist and campaigner for Tourette syndrome who became known as the subject of the BBC documentary John''s Not Mad.',
+  'John Davidson is a Scottish activist known for public education and advocacy around Tourette syndrome. Tourette syndrome is a neurological condition characterized by involuntary motor and vocal tics, and in a smaller number of cases it can include involuntary swearing or other socially disruptive vocalizations. Davidson became widely known in Britain as a teenager through the 1989 BBC documentary John''s Not Mad, which showed how severely Tourette''s affected his daily life. The program made him a familiar public figure, but it also exposed him to years of ridicule from people who treated the documentary as a source of spectacle rather than understanding.
+
+Instead of disappearing from public life after that experience, Davidson turned it into long-term advocacy work. He remained based in Galashiels, worked as a caretaker and youth worker, and became a nationally recognized spokesman for people living with Tourette syndrome. Over time he gave talks in schools, spoke with teachers and police, worked with organizations such as Tourette Scotland and Tourettes Action, and helped run a residential camp where young people with Tourette''s could meet others with similar experiences. In 2019 he was appointed an MBE for services to people with Tourette syndrome.
+
+Davidson''s public role has often been shaped by television. The BBC returned to his story in multiple follow-up documentaries, allowing viewers to see how his life changed over time rather than leaving him frozen as a single sensational image from adolescence. That long documentary record made him unusual among disability campaigners: many people first encountered him through involuntary tics that were easy to mock, then later came to understand him as an advocate, community organizer, and educator. His life in public has therefore been tied not only to awareness of Tourette''s itself, but also to changing attitudes about how disability is represented in media.
+
+That dynamic came back into view in 2026 after a widely discussed incident at the BAFTAs, where Davidson''s audible vocal tics during the ceremony prompted controversy, apology, and debate about inclusion, disability, and the responsibilities of broadcasters and event organizers. The episode renewed public attention to a problem that had run through his story from the beginning: involuntary behavior can be instantly misread as intention, especially when it happens in a high-profile setting. Davidson remains significant because his life has repeatedly forced public audiences to confront the difference between spectacle and understanding in how neurological conditions are seen.',
+  'https://en.wikipedia.org/wiki/John_Davidson_(activist)?action=history',
+  'This summary adapts Wikipedia content and is available under CC BY-SA 4.0.',
+  'Disability advocacy',
+  2,
+  'published',
+  now()
+)
+on conflict (slug) do update set
+  source_language = excluded.source_language,
+  wikipedia_title = excluded.wikipedia_title,
+  wikipedia_url = excluded.wikipedia_url,
+  wikipedia_revision_id = excluded.wikipedia_revision_id,
+  source_extract = excluded.source_extract,
+  summary_text = excluded.summary_text,
+  article_history_url = excluded.article_history_url,
+  attribution_text = excluded.attribution_text,
+  category = excluded.category,
+  reading_minutes = excluded.reading_minutes,
+  quality_status = excluded.quality_status,
+  published_at = excluded.published_at;

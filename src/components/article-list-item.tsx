@@ -1,32 +1,36 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { AppPalette, fonts, radii, spacing, typeScale } from '@/constants/theme';
+import { AppPalette, fonts, radii, spacing } from '@/constants/theme';
 import { useAppTheme } from '@/providers/theme-provider';
 import { Article } from '@/types/article';
 
 type ArticleListItemProps = {
   article: Article;
+  onDelete: () => void;
   onPress: () => void;
 };
 
-export function ArticleListItem({ article, onPress }: ArticleListItemProps) {
+export function ArticleListItem({ article, onDelete, onPress }: ArticleListItemProps) {
   const { palette } = useAppTheme();
   const styles = createStyles(palette);
 
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
-      <View style={styles.copy}>
+    <View style={styles.row}>
+      <Pressable onPress={onPress} style={({ pressed }) => [styles.openArea, pressed && styles.pressed]}>
         <Text style={styles.title}>{article.title}</Text>
-        <Text style={styles.meta}>
-          {article.category} · {article.readingMinutes} min
-        </Text>
-        <Text style={styles.preview} numberOfLines={3}>
-          {article.summaryParagraphs[0]}
-        </Text>
-      </View>
-      <Text style={styles.open}>Open</Text>
-    </Pressable>
+      </Pressable>
+
+      <Pressable
+        accessibilityHint={`Removes ${article.title}`}
+        accessibilityLabel={`Remove ${article.title}`}
+        accessibilityRole="button"
+        onPress={onDelete}
+        style={({ pressed }) => [styles.deleteButton, pressed && styles.pressed]}>
+        <Ionicons color={palette.textMuted} name="close" size={18} />
+      </Pressable>
+    </View>
   );
 }
 
@@ -41,37 +45,36 @@ function createStyles(palette: AppPalette) {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      gap: spacing.md,
+      gap: spacing.sm,
     },
     pressed: {
       opacity: 0.76,
     },
-    copy: {
+    openArea: {
       flex: 1,
-      gap: spacing.xs,
+      minHeight: 34,
+      justifyContent: 'center',
     },
     title: {
       color: palette.text,
-      fontSize: 20,
-      lineHeight: 26,
+      fontSize: 18,
+      lineHeight: 24,
       fontFamily: fonts?.serif,
     },
-    meta: {
-      color: palette.textMuted,
-      fontSize: typeScale.label,
-      fontFamily: fonts?.body,
-    },
-    preview: {
-      color: palette.text,
-      fontSize: typeScale.body,
-      lineHeight: 24,
-      fontFamily: fonts?.body,
+    deleteButton: {
+      width: 34,
+      height: 34,
+      borderRadius: radii.pill,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: palette.surfaceMuted,
+      borderWidth: 1,
+      borderColor: palette.border,
+      flexShrink: 0,
     },
     open: {
-      color: palette.accent,
-      fontSize: typeScale.label,
+      color: palette.textMuted,
       fontFamily: fonts?.body,
-      fontWeight: '600',
     },
   });
 }

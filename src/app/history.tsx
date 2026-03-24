@@ -12,34 +12,32 @@ export default function HistoryScreen() {
   const router = useRouter();
   const { palette } = useAppTheme();
   const styles = createStyles(palette);
-  const { history, selectArticle } = useArticleLibrary();
+  const { history, removeHistoryItem, selectArticle } = useArticleLibrary();
 
   return (
     <ScreenShell contentStyle={styles.content}>
       <View style={styles.hero}>
         <Text style={styles.title}>Recent discoveries</Text>
-        <Text style={styles.copy}>
-          The app remembers your recent reads so the experience stays less disposable.
-        </Text>
+        <Text style={styles.copy}>A short list of what you opened recently.</Text>
       </View>
 
       {history.length > 0 ? (
         history.map((article) => (
-          <ArticleListItem
-            key={article.id}
-            article={article}
-            onPress={() => {
-              selectArticle(article);
-              router.replace('/');
-            }}
-          />
+          <View key={article.id} style={styles.listItemWrap}>
+            <ArticleListItem
+              article={article}
+              onDelete={() => removeHistoryItem(article.id)}
+              onPress={() => {
+                selectArticle(article);
+                router.replace('/');
+              }}
+            />
+          </View>
         ))
       ) : (
         <View style={styles.emptyState}>
           <Text style={styles.emptyTitle}>Your trail starts on the home screen</Text>
-          <Text style={styles.emptyCopy}>
-            Once you explore a few articles, they will appear here in reverse order.
-          </Text>
+          <Text style={styles.emptyCopy}>Once you open a few articles, they will appear here.</Text>
         </View>
       )}
     </ScreenShell>
@@ -70,6 +68,9 @@ function createStyles(palette: AppPalette) {
     },
     emptyState: {
       gap: spacing.xs,
+    },
+    listItemWrap: {
+      marginBottom: spacing.sm,
     },
     emptyTitle: {
       color: palette.text,

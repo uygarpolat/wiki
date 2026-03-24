@@ -106,14 +106,6 @@ export function MenuSheet({ onClose, open }: MenuSheetProps) {
                   router.push('/about');
                 }}
               />
-              <MenuLinkRow
-                icon="document-text-outline"
-                label="Attribution"
-                onPress={() => {
-                  onClose();
-                  router.push('/attribution');
-                }}
-              />
 
               <ThemeToggle />
             </View>

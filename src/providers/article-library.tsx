@@ -23,6 +23,8 @@ type ArticleLibraryValue = {
   isRefreshing: boolean;
   dismissError: () => void;
   loadNextArticle: () => Promise<void>;
+  removeFavorite: (articleId: string) => void;
+  removeHistoryItem: (articleId: string) => void;
   selectArticle: (article: Article) => void;
   toggleFavorite: (article: Article) => void;
   isFavorite: (articleId: string) => boolean;
@@ -178,6 +180,14 @@ export function ArticleLibraryProvider({ children }: { children: React.ReactNode
     );
   }
 
+  function removeFavorite(articleId: string) {
+    setFavoriteIds((existingIds) => existingIds.filter((id) => id !== articleId));
+  }
+
+  function removeHistoryItem(articleId: string) {
+    setHistoryIds((existingIds) => existingIds.filter((id) => id !== articleId));
+  }
+
   function isFavorite(articleId: string) {
     return favoriteIds.includes(articleId);
   }
@@ -190,6 +200,8 @@ export function ArticleLibraryProvider({ children }: { children: React.ReactNode
     isRefreshing,
     dismissError: () => setErrorMessage(null),
     loadNextArticle,
+    removeFavorite,
+    removeHistoryItem,
     selectArticle,
     toggleFavorite,
     isFavorite,
