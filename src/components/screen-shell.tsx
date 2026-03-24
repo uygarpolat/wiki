@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AppPalette, spacing } from '@/constants/theme';
+import { AppPalette, layout, spacing } from '@/constants/theme';
 import { useAppTheme } from '@/providers/theme-provider';
 
 type ScreenShellProps = {
@@ -62,7 +62,7 @@ function createStyles(palette: AppPalette) {
     },
     maxWidth: {
       width: '100%',
-      maxWidth: 760,
+      maxWidth: layout.contentMaxWidth,
       alignSelf: 'center',
     },
   });

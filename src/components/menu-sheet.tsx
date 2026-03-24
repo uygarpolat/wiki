@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import {
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -10,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-import { AppPalette, fonts, radii, spacing, typeScale } from '@/constants/theme';
+import { AppPalette, fonts, layout, radii, spacing, typeScale } from '@/constants/theme';
 import { useAppTheme } from '@/providers/theme-provider';
 
 type MenuSheetProps = {
@@ -79,40 +80,46 @@ export function MenuSheet({ onClose, open }: MenuSheetProps) {
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.backdrop}>
           <TouchableWithoutFeedback>
-            <View style={styles.sheet}>
-              <View style={styles.headerRow}>
-                <View style={styles.headerCopy}>
-                  <Text style={styles.kicker}>Calm Wiki</Text>
-                  <Text style={styles.title}>A quiet Wikipedia reading app.</Text>
+            <View style={styles.sheetRail}>
+              <View style={styles.sheet}>
+                <View style={styles.headerRow}>
+                  <Text
+                    accessibilityRole="header"
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.9}
+                    numberOfLines={1}
+                    style={styles.title}>
+                    Calm Wiki
+                  </Text>
+                  <Pressable onPress={onClose} style={({ pressed }) => [styles.closeButton, pressed && styles.pressed]}>
+                    <Ionicons color={palette.text} name="close" size={20} />
+                  </Pressable>
                 </View>
-                <Pressable onPress={onClose} style={({ pressed }) => [styles.closeButton, pressed && styles.pressed]}>
-                  <Ionicons color={palette.text} name="close" size={20} />
-                </Pressable>
+
+                <MenuLinkRow
+                  icon="heart-outline"
+                  label="Favorites"
+                  onPress={() => {
+                    navigateTo('/favorites');
+                  }}
+                />
+                <MenuLinkRow
+                  icon="time-outline"
+                  label="History"
+                  onPress={() => {
+                    navigateTo('/history');
+                  }}
+                />
+                <MenuLinkRow
+                  icon="information-circle-outline"
+                  label="About"
+                  onPress={() => {
+                    navigateTo('/about');
+                  }}
+                />
+
+                <ThemeToggle />
               </View>
-
-              <MenuLinkRow
-                icon="heart-outline"
-                label="Favorites"
-                onPress={() => {
-                  navigateTo('/favorites');
-                }}
-              />
-              <MenuLinkRow
-                icon="time-outline"
-                label="History"
-                onPress={() => {
-                  navigateTo('/history');
-                }}
-              />
-              <MenuLinkRow
-                icon="information-circle-outline"
-                label="About"
-                onPress={() => {
-                  navigateTo('/about');
-                }}
-              />
-
-              <ThemeToggle />
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -128,6 +135,11 @@ function createStyles(palette: AppPalette) {
       backgroundColor: 'rgba(15, 12, 9, 0.28)',
       padding: spacing.lg,
       justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    sheetRail: {
+      width: '100%',
+      maxWidth: layout.contentMaxWidth,
       alignItems: 'flex-end',
     },
     sheet: {
@@ -152,27 +164,25 @@ function createStyles(palette: AppPalette) {
     headerRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       gap: spacing.md,
       marginBottom: spacing.xs,
     },
-    headerCopy: {
-      flex: 1,
-      gap: spacing.xs,
-    },
-    kicker: {
-      color: palette.textMuted,
-      fontSize: typeScale.eyebrow,
-      letterSpacing: 1.2,
-      textTransform: 'uppercase',
-      fontFamily: fonts?.body,
-      fontWeight: '600',
-    },
     title: {
       color: palette.text,
-      fontSize: 22,
-      lineHeight: 28,
-      fontFamily: fonts?.serif,
+      fontSize: 28,
+      lineHeight: 34,
+      fontFamily: Platform.select({
+        ios: 'Snell Roundhand',
+        android: fonts?.serif,
+        default: fonts?.serif,
+        web: 'cursive',
+      }),
+      fontStyle: Platform.select({
+        ios: 'normal',
+        default: 'italic',
+      }),
+      flex: 1,
     },
     closeButton: {
       width: 36,

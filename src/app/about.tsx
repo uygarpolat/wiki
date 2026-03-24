@@ -34,8 +34,10 @@ export default function AboutScreen() {
     <ScreenShell contentStyle={styles.content}>
       <SectionCard title="Calm Wiki">
         <Text style={styles.copy}>
-          Calm Wiki is a small reading app built around reviewed summaries of Wikipedia articles.
-          It is meant to be an entry point into the source, not a replacement for it.
+          Calm Wiki is a small reading app for moments when you want to learn something
+          interesting without falling into a crowded, distracting feed. Each entry is a reviewed,
+          shorter summary of a real Wikipedia article, chosen to be clear, engaging, and easy to
+          sit with for a couple of minutes.
         </Text>
       </SectionCard>
 

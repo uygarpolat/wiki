@@ -70,6 +70,10 @@ export const radii = {
   pill: 999,
 } as const;
 
+export const layout = {
+  contentMaxWidth: 760,
+} as const;
+
 export const typeScale = {
   eyebrow: 12,
   label: 13,
