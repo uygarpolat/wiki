@@ -88,27 +88,23 @@ export function ArticleLibraryProvider({ children }: { children: React.ReactNode
           entries.find(([key]) => key === STORAGE_KEYS.historyIds)?.[1] ?? null
         ).filter((articleId) => validArticleIds.has(articleId));
 
-        startTransition(() => {
-          setArticleCatalog(catalog);
-          setCurrentArticle(
-            storedCurrentArticleId && validArticleIds.has(storedCurrentArticleId)
-              ? resolveArticleById(storedCurrentArticleId, catalog)
-              : null
-          );
-          setFavoriteIds(storedFavoriteIds);
-          setHistoryIds(storedHistoryIds);
-          setErrorMessage(null);
-        });
+        setArticleCatalog(catalog);
+        setCurrentArticle(
+          storedCurrentArticleId && validArticleIds.has(storedCurrentArticleId)
+            ? resolveArticleById(storedCurrentArticleId, catalog)
+            : null
+        );
+        setFavoriteIds(storedFavoriteIds);
+        setHistoryIds(storedHistoryIds);
+        setErrorMessage(null);
+        setIsHydrated(true);
       } catch {
         if (!isMounted) {
           return;
         }
 
         setErrorMessage('Could not load the article library right now. Please try again.');
-      } finally {
-        if (isMounted) {
-          setIsHydrated(true);
-        }
+        setIsHydrated(true);
       }
     }
 
